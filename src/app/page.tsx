@@ -6,6 +6,7 @@ import EventFilter from "~/components/EventFilter";
 import UserMenu from "~/components/UserMenu";
 
 const HomePage = () => {
+  console.log(`Running in ${process.env.NODE_ENV} mode`);
   return (
     <div className="container mx-auto py-8">
       <h1 className="mb-8 font-mono text-3xl font-bold">
