@@ -2,19 +2,76 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  requests  Request[]
+  events    EventEntry[]
+}
 
-    @@index([name])
+model EventEntry {
+  id             Int      @id @default(autoincrement())
+  eventName      String
+  eventDate      DateTime
+  eventTime      String
+  eventLink      String?
+  city           String
+  province       String
+  meetupPlace    String?
+  meetupTime     String?
+  ticketStatus   TicketStatus
+  ticketCount    Int
+  companionCount CompanionCount
+  expectSelfPay  Boolean
+  description    String?
+  minAge         Int?
+  maxAge         Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id])
+}
+
+model Request {
+  id             Int      @id @default(autoincrement())
+  eventName      String
+  requesterName  String
+  status         RequestStatus
+  rejectionReason String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id])
+}
+
+enum TicketStatus {
+  PURCHASED
+  NEED_TO_PURCHASE
+}
+
+enum CompanionCount {
+  UNSPECIFIED
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+}
+
+enum RequestStatus {
+  PENDING
+  ANSWERED
+  APPROVED
+  REJECTED
 }

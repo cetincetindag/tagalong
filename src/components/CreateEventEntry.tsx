@@ -38,6 +38,8 @@ export default function CreateEventEntry() {
   const [companionCount, setCompanionCount] = useState("unspecified");
   const [expectSelfPay, setExpectSelfPay] = useState(true);
   const [description, setDescription] = useState("");
+  const [minAge, setMinAge] = useState("");
+  const [maxAge, setMaxAge] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +58,8 @@ export default function CreateEventEntry() {
       companionCount,
       expectSelfPay,
       description,
+      minAge,
+      maxAge,
     });
     toast({
       title: "Entry Created",
@@ -204,6 +208,30 @@ export default function CreateEventEntry() {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="minAge">Minimum Age (Optional)</Label>
+              <Input
+                id="minAge"
+                type="number"
+                min="0"
+                value={minAge}
+                onChange={(e) => setMinAge(e.target.value)}
+                placeholder="Enter minimum age"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="maxAge">Maximum Age (Optional)</Label>
+              <Input
+                id="maxAge"
+                type="number"
+                min="0"
+                value={maxAge}
+                onChange={(e) => setMaxAge(e.target.value)}
+                placeholder="Enter maximum age"
+              />
+            </div>
           </div>
           <div className="flex items-center space-x-2">
             <Switch

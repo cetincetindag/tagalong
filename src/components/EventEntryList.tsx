@@ -5,9 +5,9 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Badge } from "~/components/ui/badge";
@@ -33,6 +33,8 @@ interface EventEntry {
   ticketCount: number;
   companionCount: number | "unspecified";
   expectSelfPay: boolean;
+  minAge: number | null;
+  maxAge: number | null;
 }
 
 const mockEntries: EventEntry[] = [
@@ -47,6 +49,8 @@ const mockEntries: EventEntry[] = [
     ticketCount: 2,
     companionCount: 1,
     expectSelfPay: false,
+    minAge: 18,
+    maxAge: 30,
   },
   {
     id: "2",
@@ -59,6 +63,50 @@ const mockEntries: EventEntry[] = [
     ticketCount: 1,
     companionCount: "unspecified",
     expectSelfPay: true,
+    minAge: 21,
+    maxAge: null,
+  },
+  {
+    id: "3",
+    eventName: "Local Food Festival",
+    eventDate: "2023-08-05",
+    eventTime: "11:00",
+    city: "Montreal",
+    province: "Quebec",
+    ticketStatus: "purchased",
+    ticketCount: 3,
+    companionCount: 2,
+    expectSelfPay: true,
+    minAge: null,
+    maxAge: null,
+  },
+  {
+    id: "4",
+    eventName: "Art Gallery Opening",
+    eventDate: "2023-07-30",
+    eventTime: "19:00",
+    city: "Ottawa",
+    province: "Ontario",
+    ticketStatus: "need-to-purchase",
+    ticketCount: 2,
+    companionCount: 1,
+    expectSelfPay: false,
+    minAge: 25,
+    maxAge: 40,
+  },
+  {
+    id: "5",
+    eventName: "Outdoor Movie Night",
+    eventDate: "2023-08-12",
+    eventTime: "20:30",
+    city: "Calgary",
+    province: "Alberta",
+    ticketStatus: "purchased",
+    ticketCount: 4,
+    companionCount: 3,
+    expectSelfPay: true,
+    minAge: null,
+    maxAge: 35,
   },
 ];
 
@@ -94,7 +142,7 @@ export default function EventEntryList() {
             <p>
               {entry.city}, {entry.province}
             </p>
-            <div className="mt-2 flex space-x-2">
+            <div className="mt-2 flex flex-wrap gap-2">
               <Badge
                 variant={
                   entry.ticketStatus === "purchased" ? "default" : "secondary"
@@ -110,6 +158,11 @@ export default function EventEntryList() {
                   ? "Any number of companions"
                   : `${entry.companionCount} companion(s)`}
               </Badge>
+              {(entry.minAge || entry.maxAge) && (
+                <Badge variant="outline">
+                  Age: {entry.minAge || "0"} - {entry.maxAge || "∞"}
+                </Badge>
+              )}
             </div>
           </CardContent>
           <CardFooter>
